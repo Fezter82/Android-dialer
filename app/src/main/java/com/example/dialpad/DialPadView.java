@@ -27,8 +27,8 @@ import static android.content.Context.AUDIO_SERVICE;
 
 public class DialPadView extends TableLayout{
 
-    private ArrayList<View> buttons; // all dialer buttons 0-9, #, *
-    private SoundPool soundPool;    // plays sounds
+    private final ArrayList<View> buttons; // all dialer buttons 0-9, #, *
+    private final SoundPool soundPool;    // plays sounds
     private int sound0, sound1, sound2, sound3, sound4, sound5, sound6, sound7, sound8, sound9, soundStar, soundPound; // id:s of all sounds
     private boolean soundPoolLoaded = false; // true when soundPool is loaded
     private boolean soundsLoaded = false; // true when sounds are loaded
@@ -42,7 +42,9 @@ public class DialPadView extends TableLayout{
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.dialpadview, this, true);
+        if (inflater != null) {
+            inflater.inflate(R.layout.dialpadview, this, true);
+        }
 
         // initialize buttons container
         buttons = new ArrayList<>();
@@ -293,7 +295,10 @@ public class DialPadView extends TableLayout{
 
         if (soundsLoaded && soundPoolLoaded) {
             AudioManager audioManager = (AudioManager) this.getContext().getSystemService(AUDIO_SERVICE);
-            float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+            float actualVolume = 0;
+            if (audioManager != null) {
+                actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+            }
             float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
             float volume = actualVolume / maxVolume;
 
