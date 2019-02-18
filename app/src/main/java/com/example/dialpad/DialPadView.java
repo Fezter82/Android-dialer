@@ -22,13 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import static android.content.Context.AUDIO_SERVICE;
 
 public class DialPadView extends TableLayout{
 
-    private ArrayList<View> buttons; // all dialer buttons 0-9, #, *
-    private SoundPool soundPool;    // plays sounds
+    private final ArrayList<View> buttons; // all dialer buttons 0-9, #, *
+    private final SoundPool soundPool;    // plays sounds
     private int sound0, sound1, sound2, sound3, sound4, sound5, sound6, sound7, sound8, sound9, soundStar, soundPound; // id:s of all sounds
     private boolean soundPoolLoaded = false; // true when soundPool is loaded
     private boolean soundsLoaded = false; // true when sounds are loaded
@@ -42,7 +43,9 @@ public class DialPadView extends TableLayout{
         super(context, attrs);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.dialpadview, this, true);
+        if (inflater != null) {
+            inflater.inflate(R.layout.dialpadview, this, true);
+        }
 
         // initialize buttons container
         buttons = new ArrayList<>();
@@ -125,6 +128,21 @@ public class DialPadView extends TableLayout{
             }
         });
 
+        // add default numbers to call history
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Set<String> storedNumbers = sharedPreferences.getStringSet(SettingsActivity.STORED_NUMBERS, new HashSet<String>());
+
+        for (int i = 0; i < 100; i++) {
+            String number = String.valueOf(new Random().nextInt(888888) + 111111);
+            if (storedNumbers != null) {
+                storedNumbers.add(number);
+            }
+        }
+
+        editor.putStringSet(SettingsActivity.STORED_NUMBERS, storedNumbers);
+        editor.apply();
+
     }
 
     // Check if external storage is available to read
@@ -158,7 +176,9 @@ public class DialPadView extends TableLayout{
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Set<String> storedNumbers = sharedPreferences.getStringSet(SettingsActivity.STORED_NUMBERS, new HashSet<String>());
 
-            storedNumbers.add(input);
+            if (storedNumbers != null) {
+                storedNumbers.add(input);
+            }
             editor.putStringSet(SettingsActivity.STORED_NUMBERS, storedNumbers);
             editor.apply();
         }
@@ -293,8 +313,14 @@ public class DialPadView extends TableLayout{
 
         if (soundsLoaded && soundPoolLoaded) {
             AudioManager audioManager = (AudioManager) this.getContext().getSystemService(AUDIO_SERVICE);
-            float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
-            float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+            float actualVolume = 0;
+            if (audioManager != null) {
+                actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+            }
+            float maxVolume = 0;
+            if (audioManager != null) {
+                maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+            }
             float volume = actualVolume / maxVolume;
 
             if (button == findViewById(R.id.imageButton1))
