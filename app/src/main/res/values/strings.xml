@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">dialpad</string>
+    <string name="dialpadview_titleText">Dialpad</string>
+    <string name="desc_button1">Button 1</string>
+    <string name="desc_button2">Button 2</string>
+    <string name="desc_button3">Button 3</string>
+    <string name="desc_button4">Button 4</string>
+    <string name="desc_button5">Button 5</string>
+    <string name="desc_button6">Button 6</string>
+    <string name="desc_button7">Button 7</string>
+    <string name="desc_button8">Button 8</string>
+    <string name="desc_button9">Button 9</string>
+    <string name="desc_buttonStar">Button *</string>
+    <string name="desc_button0">Button 0</string>
+    <string name="desc_buttonPound">Button #</string>
+    <string name="desc_buttonDelete">Delete button</string>
+    <string name="desc_buttonPhone">Phone button</string>
+    <string name="desc_fieldNumber">Number field</string>
+    <string name="toast_permissionNotGranted">Permission not granted, sound not available!</string>
+    <string name="toast_noExternalMemory">External memory not available, unable to load sounds!</string>
+    <string name="name_callList">Call List</string>
+    <string name="name_settings">Settings</string>
+    <string name="settings_saveNumbers">Save numbers history</string>
+    <string name="toast_noDialer">No dialer is installed!</string>
+    <string name="preferences_stored_numbers">com.example.dialpad.PREFERENCE_STORED_NUMBERS</string>
+</resources>

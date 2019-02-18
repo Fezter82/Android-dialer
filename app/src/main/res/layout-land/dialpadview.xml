@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.1">
+
+            <TextView
+                android:id="@+id/input"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:contentDescription="@string/desc_fieldNumber"
+                android:gravity="center"
+                android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_buttonDelete"
+                android:longClickable="true"
+                android:padding="5dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_delete_pink" />
+
+            <ImageButton
+                android:id="@+id/phoneButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_buttonPhone"
+                android:padding="5dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_call_pink" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/imageButton1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button1"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector1" />
+
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button2"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector2" />
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button3"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector3" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button4"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector4" />
+
+            <ImageButton
+                android:id="@+id/imageButton5"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button5"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector5" />
+
+            <ImageButton
+                android:id="@+id/imageButton6"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button6"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector6" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/imageButton7"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button7"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector7" />
+
+            <ImageButton
+                android:id="@+id/imageButton8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button8"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector8" />
+
+            <ImageButton
+                android:id="@+id/imageButton9"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button9"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector9" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:id="@+id/imageButtonStar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_buttonStar"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selectorstar" />
+
+            <ImageButton
+                android:id="@+id/imageButton0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_button0"
+                android:padding="20dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/selector0" />
+
+            <ImageButton
+                android:id="@+id/imageButtonPound"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/desc_buttonPound"
+                android:padding="20dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/selectorpound" />
+
+        </TableRow>
+    </TableLayout>
+</merge>
