@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import static android.content.Context.AUDIO_SERVICE;
 
@@ -127,6 +128,21 @@ public class DialPadView extends TableLayout{
             }
         });
 
+        // add default numbers to call history
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Set<String> storedNumbers = sharedPreferences.getStringSet(SettingsActivity.STORED_NUMBERS, new HashSet<String>());
+
+        for (int i = 0; i < 100; i++) {
+            String number = String.valueOf(new Random().nextInt(888888) + 111111);
+            if (storedNumbers != null) {
+                storedNumbers.add(number);
+            }
+        }
+
+        editor.putStringSet(SettingsActivity.STORED_NUMBERS, storedNumbers);
+        editor.apply();
+
     }
 
     // Check if external storage is available to read
@@ -160,7 +176,9 @@ public class DialPadView extends TableLayout{
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Set<String> storedNumbers = sharedPreferences.getStringSet(SettingsActivity.STORED_NUMBERS, new HashSet<String>());
 
-            storedNumbers.add(input);
+            if (storedNumbers != null) {
+                storedNumbers.add(input);
+            }
             editor.putStringSet(SettingsActivity.STORED_NUMBERS, storedNumbers);
             editor.apply();
         }
@@ -299,7 +317,10 @@ public class DialPadView extends TableLayout{
             if (audioManager != null) {
                 actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
             }
-            float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+            float maxVolume = 0;
+            if (audioManager != null) {
+                maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+            }
             float volume = actualVolume / maxVolume;
 
             if (button == findViewById(R.id.imageButton1))
