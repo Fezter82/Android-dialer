@@ -151,7 +151,7 @@ public class DialPadView extends TableLayout{
 
         // Check settings if numbers should be saved
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean saveNumber = sharedPreferences.getBoolean(SettingsActivity.SAVE_NUMBERS_SWITCH, false);
+        boolean saveNumber = sharedPreferences.getBoolean(SettingsActivity.SAVE_NUMBERS_SWITCH, true);
 
         // if numbers should be saved, save number
         if (saveNumber) {
