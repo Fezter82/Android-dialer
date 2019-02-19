@@ -51,6 +51,53 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
     }
 
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // permission denied
+                    // tell the user with a toast
+                    Context context = getApplicationContext();
+                    CharSequence text = getString(R.string.toast_permissionNotGranted);
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.actionbaritems, menu);
+        return true;
+    }
+
+    // Handle selections on the menu of the app bar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+
+            case R.id.action_call_list:
+                Intent callListIntent = new Intent(this, CallListActivity.class);
+                startActivity(callListIntent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
@@ -106,50 +153,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
 
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission denied
-                    // tell the user with a toast
-                    Context context = getApplicationContext();
-                    CharSequence text = getString(R.string.toast_permissionNotGranted);
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.actionbaritems, menu);
-        return true;
-    }
-
-    // Handle selections on the menu of the app bar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-
-            case R.id.action_call_list:
-                Intent callListIntent = new Intent(this, CallListActivity.class);
-                startActivity(callListIntent);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
     }
 }
