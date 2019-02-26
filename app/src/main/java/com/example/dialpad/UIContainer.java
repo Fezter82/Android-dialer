@@ -119,4 +119,12 @@ public class UIContainer<T> {
 
         return s;
     }
+
+    public int getxSize() {
+        return xSize;
+    }
+
+    public int getySize() {
+        return ySize;
+    }
 }
