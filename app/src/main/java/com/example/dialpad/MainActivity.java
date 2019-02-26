@@ -102,6 +102,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         uiContainer.set(0, 5, findViewById(R.id.imageButtonStar));
         uiContainer.set(1, 5, findViewById(R.id.imageButton0));
         uiContainer.set(2, 5, findViewById(R.id.imageButtonPound));
+
+        // If this activity was started with an intent, get number from intent
+        Intent intent = getIntent();
+        String number = intent.getStringExtra("NUMBER");
+        TextView textView = findViewById(R.id.input);
+        textView.setText(number);
     }
 
 
@@ -141,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 return true;
 
             case R.id.action_call_list:
-                Intent callListIntent = new Intent(this, CallListActivity.class);
+                Intent callListIntent = new Intent(this, SelectableCallListActivity.class);
                 startActivity(callListIntent);
                 return true;
 
