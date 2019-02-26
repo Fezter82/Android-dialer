@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,35 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor accelerometer;
     private TextView x, y, z;
     private Toast directionToast;
+
+
+    /**
+     * UI-container that contains all buttons etc that can be interacted with using
+     * accelerometer.
+     *
+     * Layout:
+
+     (x:0,y:0)  (x:1,y:0)   (x:2,y:0)
+     null       null        Call-list
+
+     (x:0,y:1)  (x:1,y:1)   (x:2,y:1)
+     null       delete      call
+
+     (x:0,y:2)  (x:1,y:2)   (x:2,y:2)
+     1          2           3
+
+     (x:0,y:3)  (x:1,y:3)   (x:2,y:3)
+     4          5           6
+
+     (x:0,y:4)  (x:1,y:4)   (x:2,y:4)
+     7          8           9
+
+     (x:0,y:5)  (x:1,y:5)   (x:2,y:5)
+     *          0           #
+
+
+     */
+    UIContainer<View> uiContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +80,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // Set default values if no values are set
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+
+        // put ui-elements in uicontainer
+        uiContainer = new UIContainer<>(3, 6);
+        uiContainer.set(0, 0, null);
+        uiContainer.set(1, 0, null);
+        uiContainer.set(2, 0, findViewById(R.id.action_call_list));
+        uiContainer.set(0, 1, null);
+        uiContainer.set(1, 1, findViewById(R.id.deleteButton));
+        uiContainer.set(2, 1, findViewById(R.id.phoneButton));
+        uiContainer.set(0, 2, findViewById(R.id.imageButton1));
+        uiContainer.set(1, 2, findViewById(R.id.imageButton2));
+        uiContainer.set(2, 2, findViewById(R.id.imageButton3));
+        uiContainer.set(0, 3, findViewById(R.id.imageButton4));
+        uiContainer.set(1, 3, findViewById(R.id.imageButton5));
+        uiContainer.set(2, 3, findViewById(R.id.imageButton6));
+        uiContainer.set(0, 4, findViewById(R.id.imageButton7));
+        uiContainer.set(1, 4, findViewById(R.id.imageButton8));
+        uiContainer.set(2, 4, findViewById(R.id.imageButton9));
+        uiContainer.set(0, 5, findViewById(R.id.imageButtonStar));
+        uiContainer.set(1, 5, findViewById(R.id.imageButton0));
+        uiContainer.set(2, 5, findViewById(R.id.imageButtonPound));
     }
 
 
