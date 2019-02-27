@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
      */
     UIContainer<View> uiContainer;
+    UINavigator navigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         String number = intent.getStringExtra("NUMBER");
         TextView textView = findViewById(R.id.input);
         textView.setText(number);
+
+        navigator = new UINavigator(uiContainer, getApplicationContext());
     }
 
 
@@ -183,32 +186,36 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (directionToast != null) {
                 directionToast.cancel();
             }
-            directionToast = Toast.makeText(context, "Uppåt!", duration);
-            directionToast.show();
+            navigator.moveUp();
+            /*directionToast = Toast.makeText(context, "Uppåt!", duration);
+            directionToast.show();*/
         }
         //if phone is tilted backwards(against user) with enough directional speed(<2)
         else if(event.values[1] > 8 && event.values[2] < 2){
             if (directionToast != null) {
                 directionToast.cancel();
             }
-            directionToast = Toast.makeText(context, "Neråt!", duration);
-            directionToast.show();
+            navigator.moveDown();
+            /*directionToast = Toast.makeText(context, "Neråt!", duration);
+            directionToast.show();*/
         }
         //if phone is tilted left
         else if(event.values[0] > 3){
             if (directionToast != null) {
                 directionToast.cancel();
             }
-            directionToast = Toast.makeText(context, "Vänster!", duration);
-            directionToast.show();
+            navigator.moveLeft();
+            /*directionToast = Toast.makeText(context, "Vänster!", duration);
+            directionToast.show();*/
         }
         //if phone is tilted right
         else if(event.values[0] < -3){
             if (directionToast != null) {
                 directionToast.cancel();
             }
-            directionToast = Toast.makeText(context, "Höger!", duration);
-            directionToast.show();
+            navigator.moveRight();
+            /*directionToast = Toast.makeText(context, "Höger!", duration);
+            directionToast.show();*/
         }
 
 
