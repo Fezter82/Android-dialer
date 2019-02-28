@@ -14,7 +14,7 @@ public class UINavigator {
 
     private UIContainer container;
     private View currentElementInFocus;
-    private int currentX, currentY;
+    private Position currentPos;
     private Context ctx;
     private ObjectAnimator anim;
 
@@ -26,19 +26,19 @@ public class UINavigator {
      */
     public UINavigator(UIContainer pCont, Context pCtx){
         this.container = pCont;
-        this.currentX = 0;
-        this.currentY = 0;
+        this.currentPos = new Position();
         this.ctx = pCtx;
 
         boolean isFound = false;
 
         for(int y=0; y<container.getxSize() && !isFound; y++) {
             for (int x = 0; x < container.getySize() && !isFound; x++) {
-                if (container.isValid(x, y)) {
-                    if (!container.isEmpty(x, y)) {
-                        currentElementInFocus = (View) container.get(x, y);
-                        currentX = x;
-                        currentY = y;
+                Position position = new Position(x, y);
+                if (container.isValid(position)) {
+                    if (!container.isEmpty(position)) {
+                        currentElementInFocus = (View) container.get(position);
+                        currentPos.setX(position.getX());
+                        currentPos.setY(position.getY());
                         setCurrentElementAsMarked();
                         isFound = true;
                     }
@@ -53,10 +53,11 @@ public class UINavigator {
      */
     public boolean moveUp(){
 
-        if(container.isValid(currentX, currentY-1) && !container.isEmpty(currentX, currentY-1)){
+        Position nextPos = new Position(currentPos.getX(), currentPos.getY() - 1);
+        if(container.isValid(nextPos) && !container.isEmpty(nextPos)){
             unmarkCurrentElement();
-            currentElementInFocus = (View)container.get(currentX, currentY-1);
-            currentY--;
+            currentElementInFocus = (View)container.get(nextPos);
+            currentPos.setY(currentPos.getY() - 1);
             setCurrentElementAsMarked();
             return true;
         }
@@ -71,10 +72,11 @@ public class UINavigator {
      */
     public boolean moveDown(){
 
-        if(container.isValid(currentX, currentY+1) && !container.isEmpty(currentX, currentY+1)){
+        Position nextPos = new Position(currentPos.getX(), currentPos.getY() + 1);
+        if(container.isValid(nextPos) && !container.isEmpty(nextPos)){
             unmarkCurrentElement();
-            currentElementInFocus = (View)container.get(currentX, currentY+1);
-            currentY++;
+            currentElementInFocus = (View)container.get(nextPos);
+            currentPos.setY(currentPos.getY() + 1);
             setCurrentElementAsMarked();
             return true;
         }
@@ -89,10 +91,11 @@ public class UINavigator {
      */
     public boolean moveLeft(){
 
-        if(container.isValid(currentX-1, currentY) && !container.isEmpty(currentX-1, currentY)){
+        Position nextPos = new Position(currentPos.getX() - 1, currentPos.getY());
+        if(container.isValid(nextPos) && !container.isEmpty(nextPos)){
             unmarkCurrentElement();
-            currentElementInFocus = (View)container.get(currentX-1, currentY);
-            currentX--;
+            currentElementInFocus = (View)container.get(nextPos);
+            currentPos.setX(currentPos.getX() - 1);
             setCurrentElementAsMarked();
             return true;
         }
@@ -107,10 +110,11 @@ public class UINavigator {
      */
     public boolean moveRight(){
 
-        if(container.isValid(currentX+1, currentY) && !container.isEmpty(currentX+1, currentY)){
+        Position nextPos = new Position(currentPos.getX() + 1, currentPos.getY());
+        if(container.isValid(nextPos) && !container.isEmpty(nextPos)){
             unmarkCurrentElement();
-            currentElementInFocus = (View)container.get(currentX+1, currentY);
-            currentX++;
+            currentElementInFocus = (View)container.get(nextPos);
+            currentPos.setX(currentPos.getX() + 1);
             setCurrentElementAsMarked();
             return true;
         }
@@ -129,7 +133,7 @@ public class UINavigator {
         anim.start();
 
         Toast toast;
-        toast = Toast.makeText(ctx, "Element in focus: x=" + currentX + " y=" + currentY, Toast.LENGTH_SHORT);
+        toast = Toast.makeText(ctx, "Element in focus: x=" + currentPos.getX() + " y=" + currentPos.getY(), Toast.LENGTH_SHORT);
         toast.show();
     }
 
