@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
      */
+    /**
+     * @TODO Use BaseContainer = new UIContainer instead of UIContainer
+     */
     UIContainer<View> uiContainer;
     UINavigator navigator;
 
@@ -85,24 +88,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         // put ui-elements in uicontainer
         uiContainer = new UIContainer<>(3, 6);
-        uiContainer.set(0, 0, null);
-        uiContainer.set(1, 0, null);
-        uiContainer.set(2, 0, findViewById(R.id.action_call_list));
-        uiContainer.set(0, 1, null);
-        uiContainer.set(1, 1, findViewById(R.id.deleteButton));
-        uiContainer.set(2, 1, findViewById(R.id.phoneButton));
-        uiContainer.set(0, 2, findViewById(R.id.imageButton1));
-        uiContainer.set(1, 2, findViewById(R.id.imageButton2));
-        uiContainer.set(2, 2, findViewById(R.id.imageButton3));
-        uiContainer.set(0, 3, findViewById(R.id.imageButton4));
-        uiContainer.set(1, 3, findViewById(R.id.imageButton5));
-        uiContainer.set(2, 3, findViewById(R.id.imageButton6));
-        uiContainer.set(0, 4, findViewById(R.id.imageButton7));
-        uiContainer.set(1, 4, findViewById(R.id.imageButton8));
-        uiContainer.set(2, 4, findViewById(R.id.imageButton9));
-        uiContainer.set(0, 5, findViewById(R.id.imageButtonStar));
-        uiContainer.set(1, 5, findViewById(R.id.imageButton0));
-        uiContainer.set(2, 5, findViewById(R.id.imageButtonPound));
+        uiContainer.set(new Position(0,0), null);
+        uiContainer.set(new Position(1, 0), null);
+        uiContainer.set(new Position(2, 0), findViewById(R.id.action_call_list));
+        uiContainer.set(new Position(0, 1), null);
+        uiContainer.set(new Position(1, 1), findViewById(R.id.deleteButton));
+        uiContainer.set(new Position(2, 1), findViewById(R.id.phoneButton));
+        uiContainer.set(new Position(0, 2), findViewById(R.id.imageButton1));
+        uiContainer.set(new Position(1, 2), findViewById(R.id.imageButton2));
+        uiContainer.set(new Position(2, 2), findViewById(R.id.imageButton3));
+        uiContainer.set(new Position(0, 3), findViewById(R.id.imageButton4));
+        uiContainer.set(new Position(1, 3), findViewById(R.id.imageButton5));
+        uiContainer.set(new Position(2, 3), findViewById(R.id.imageButton6));
+        uiContainer.set(new Position(0, 4), findViewById(R.id.imageButton7));
+        uiContainer.set(new Position(1, 4), findViewById(R.id.imageButton8));
+        uiContainer.set(new Position(2, 4), findViewById(R.id.imageButton9));
+        uiContainer.set(new Position(0, 5), findViewById(R.id.imageButtonStar));
+        uiContainer.set(new Position(1, 5), findViewById(R.id.imageButton0));
+        uiContainer.set(new Position(2, 5), findViewById(R.id.imageButtonPound));
 
         // If this activity was started with an intent, get number from intent
         Intent intent = getIntent();
