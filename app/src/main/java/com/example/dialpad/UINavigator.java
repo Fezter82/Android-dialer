@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class UINavigator {
 
-    private UIContainer container;
+    private BaseContainer container;
     private View currentElementInFocus;
     private Position currentPos;
     private Context ctx;
@@ -23,9 +23,8 @@ public class UINavigator {
     /**
      * Constructor
      * @param pCont
-     * @TODO Use BaseContainer instead of UIContainer
      */
-    public UINavigator(UIContainer pCont, Context pCtx){
+    public UINavigator(BaseContainer pCont, Context pCtx){
         this.container = pCont;
         this.currentPos = new Position();
         this.ctx = pCtx;

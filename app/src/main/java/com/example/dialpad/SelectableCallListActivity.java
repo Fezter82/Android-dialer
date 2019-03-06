@@ -10,9 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import java.util.Set;
-
 public class SelectableCallListActivity extends ListActivity {
+
+    BaseContainer<View> uiContainer;
+    UINavigator navigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,9 @@ public class SelectableCallListActivity extends ListActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_selectable_call_list_row, R.id.listRowTextView, storedNumbers);
 
         this.setListAdapter(adapter);
+
+        uiContainer = new ListViewContainer<>(this.getListView());
+        navigator = new UINavigator(uiContainer, getApplicationContext());
     }
 
     @Override
