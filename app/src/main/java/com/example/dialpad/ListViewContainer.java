@@ -4,6 +4,7 @@ import android.widget.ListView;
 
 public class ListViewContainer<View> implements BaseContainer<View> {
     ListView listView;
+    boolean scrollable;
 
     /**
      * Constructor
@@ -12,6 +13,7 @@ public class ListViewContainer<View> implements BaseContainer<View> {
     public ListViewContainer(ListView listView) {
         super();
         this.listView = listView;
+        this.scrollable = true;
     }
 
     /**
@@ -74,5 +76,41 @@ public class ListViewContainer<View> implements BaseContainer<View> {
     @Override
     public boolean set(Position position, Object object) {
         return false;
+    }
+
+    /**
+     * @return true if ui is scrollable
+     */
+    @Override
+    public boolean isScrollable() {
+        return scrollable;
+    }
+
+    /**
+     * Sets the scrollable flag
+     *
+     * @param scrollable
+     */
+    @Override
+    public void setScrollable(boolean scrollable) {
+        this.scrollable = scrollable;
+    }
+
+    /**
+     * @return x-size of container
+     * @ TODO Implement method
+     */
+    @Override
+    public int getxSize() {
+        return 0;
+    }
+
+    /**
+     * @return y-size of container
+     * @ TODO Implement method
+     */
+    @Override
+    public int getySize() {
+        return 0;
     }
 }
