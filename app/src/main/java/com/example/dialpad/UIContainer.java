@@ -134,7 +134,7 @@ public class UIContainer<T> implements BaseContainer<T> {
         return ySize;
     }
 
-    /**
+       /**
      * @return true if ui is scrollable
      */
     @Override
@@ -144,4 +144,42 @@ public class UIContainer<T> implements BaseContainer<T> {
     public void setScrollable(boolean scrollable) {
         this.scrollable = scrollable;
     }
+
+    /**
+     * @return true if scrolling succeded
+     * @TODO implement if needed
+     */
+    @Override
+    public boolean scrollUp() {
+        return false;
+    }
+
+    /**
+     * @return true if scrolling succeded
+     * @TODO implement if needed
+     */
+    @Override
+    public boolean scrollDown() {
+        return false;
+    }
+
+    /**
+     * @return true if scrolling succeded
+     * @TODO implement if needed
+     */
+    @Override
+    public boolean scrollLeft() {
+        return false;
+    }
+
+    /**
+     * @return true if scrolling succeded
+     * @TODO implement if needed
+     */
+    @Override
+    public boolean scrollRight() {
+        return false;
+    }
+
+
 }

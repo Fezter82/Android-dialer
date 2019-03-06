@@ -113,4 +113,42 @@ public class ListViewContainer<View> implements BaseContainer<View> {
     public int getySize() {
         return 0;
     }
+
+    /**
+     * @return true if scrolling succeded
+     */
+    @Override
+    public boolean scrollUp() {
+        if(isScrollable()) {
+            listView.smoothScrollByOffset(-1);
+            return true;}
+        return false;
+    }
+
+    /**
+     * @return true if scrolling succeded
+     */
+    @Override
+    public boolean scrollDown() {
+        if(isScrollable()) {
+            listView.smoothScrollByOffset(1);
+            return true;}
+        return false;
+    }
+
+    /**
+     * @return true if scrolling succeded
+     */
+    @Override
+    public boolean scrollLeft() {
+        return false;
+    }
+
+    /**
+     * @return true if scrolling succeded
+     */
+    @Override
+    public boolean scrollRight() {
+        return false;
+    }
 }
