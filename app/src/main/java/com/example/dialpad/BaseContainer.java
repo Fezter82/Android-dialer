@@ -37,4 +37,27 @@ public interface BaseContainer<T> {
      * @return true if successful
      */
     public boolean set(Position position, T object);
+
+    /**
+     *
+     * @return true if ui is scrollable
+     */
+    public boolean isScrollable();
+
+    /**
+     * Sets the scrollable flag
+     */
+    public void setScrollable(boolean scrollable);
+
+    /**
+     *
+     * @return x-size of container
+     */
+    public int getxSize();
+
+    /**
+     *
+     * @return y-size of container
+     */
+    public int getySize();
 }

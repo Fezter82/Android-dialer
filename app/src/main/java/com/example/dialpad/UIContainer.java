@@ -16,6 +16,7 @@ public class UIContainer<T> implements BaseContainer<T> {
     private ArrayList<ArrayList<T>> grid;
     private int xSize;
     private int ySize;
+    private boolean scrollable;
 
     /**
      * Constructor
@@ -35,6 +36,8 @@ public class UIContainer<T> implements BaseContainer<T> {
         for (int x = 0; x < xSize; x++) {
             grid.add(new ArrayList<T>(yList));
         }
+
+        this.scrollable = false;
     }
 
     /**
@@ -42,6 +45,7 @@ public class UIContainer<T> implements BaseContainer<T> {
      * @param position
      * @return true if valid
      */
+    @Override
     public boolean isValid(Position position) {
         return position.getX() < xSize && position.getY() < ySize && position.getX() >= 0 && position.getY() >= 0;
     }
@@ -51,6 +55,7 @@ public class UIContainer<T> implements BaseContainer<T> {
      * @param position
      * @return true if successful, false if position is not valid
      */
+    @Override
     public boolean remove(Position position) {
         // if trying to remove object outside grid
         if (!isValid(position))
@@ -66,6 +71,7 @@ public class UIContainer<T> implements BaseContainer<T> {
      * @param position
      * @return true if empty, false if not empty or not valid
      */
+    @Override
     public boolean isEmpty(Position position) {
         return isValid(position) && grid.get(position.getX()).get(position.getY()) == null;
     }
@@ -75,6 +81,7 @@ public class UIContainer<T> implements BaseContainer<T> {
      * @param position
      * @return
      */
+    @Override
     public T get(Position position) {
         if (isValid(position))
             return grid.get(position.getX()).get(position.getY());
@@ -88,6 +95,7 @@ public class UIContainer<T> implements BaseContainer<T> {
      * @param object
      * @return true if successful
      */
+    @Override
     public boolean set(Position position, T object) {
         if (!isValid(position))
             return false;
@@ -116,11 +124,24 @@ public class UIContainer<T> implements BaseContainer<T> {
         return s;
     }
 
+    @Override
     public int getxSize() {
         return xSize;
     }
 
+    @Override
     public int getySize() {
         return ySize;
+    }
+
+    /**
+     * @return true if ui is scrollable
+     */
+    @Override
+    public boolean isScrollable() { return scrollable; }
+
+    @Override
+    public void setScrollable(boolean scrollable) {
+        this.scrollable = scrollable;
     }
 }
