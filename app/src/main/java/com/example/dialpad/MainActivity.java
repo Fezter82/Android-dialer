@@ -22,6 +22,12 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor accelerometer;
     private TextView x, y, z;
     private Toast directionToast;
+    private ExecutorService exec;
 
 
     /**
@@ -114,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         textView.setText(number);
 
         navigator = new UINavigator(uiContainer, getApplicationContext());
+        exec = Executors.newFixedThreadPool(1);
     }
 
 
@@ -172,53 +180,117 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
 
+        //System.out.println("Motion detected X: " + event.values[1] + ", Y: " + event.values[2]);
+
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
 
-        //if phone is pushed downwards/backwards
+        //CLICK
         if(event.values[2] > 15){
+
+            System.out.println("CLICK detected");
+
             if (directionToast != null) {
                 directionToast.cancel();
             }
-            directionToast = Toast.makeText(context, "Click!", duration);
-            directionToast.show();
+
+            sm.unregisterListener(this);
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
-        //if phone is tilted forward(away from user) with enough directional speed(>10)
+        //UP
         else if(event.values[1] < 6 && event.values[2] > 10){
-            //if a toast is already open, cancel it
+
+            System.out.println("UP detected");
+
             if (directionToast != null) {
                 directionToast.cancel();
             }
+
+            sm.unregisterListener(this);
+
             navigator.moveUp();
-            /*directionToast = Toast.makeText(context, "Uppåt!", duration);
-            directionToast.show();*/
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
         }
-        //if phone is tilted backwards(against user) with enough directional speed(<2)
+        //DOWN
         else if(event.values[1] > 8 && event.values[2] < 2){
+
+            System.out.println("DOWN detected");
+
             if (directionToast != null) {
                 directionToast.cancel();
             }
+
+            sm.unregisterListener(this);
+
             navigator.moveDown();
-            /*directionToast = Toast.makeText(context, "Neråt!", duration);
-            directionToast.show();*/
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
         }
-        //if phone is tilted left
+        //LEFT
         else if(event.values[0] > 3){
+
+            System.out.println("LEFT detected");
+
             if (directionToast != null) {
                 directionToast.cancel();
             }
+
+            sm.unregisterListener(this);
+
             navigator.moveLeft();
-            /*directionToast = Toast.makeText(context, "Vänster!", duration);
-            directionToast.show();*/
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
         }
-        //if phone is tilted right
+        //RIGHT
         else if(event.values[0] < -3){
+
+            System.out.println("RIGHT detected");
+
             if (directionToast != null) {
                 directionToast.cancel();
             }
+
+            sm.unregisterListener(this);
+
             navigator.moveRight();
-            /*directionToast = Toast.makeText(context, "Höger!", duration);
-            directionToast.show();*/
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
         }
 
 
