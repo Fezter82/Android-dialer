@@ -17,6 +17,7 @@ public class UINavigator {
     private Position currentPos;
     private Context ctx;
     private ObjectAnimator anim;
+    private Toast toast;
 
 
 
@@ -132,7 +133,10 @@ public class UINavigator {
         anim.setDuration(1);
         anim.start();
 
-        Toast toast;
+        if (toast != null) {
+            toast.cancel();
+        }
+
         toast = Toast.makeText(ctx, "Element in focus: x=" + currentPos.getX() + " y=" + currentPos.getY(), Toast.LENGTH_SHORT);
         toast.show();
     }
@@ -142,7 +146,9 @@ public class UINavigator {
      * Resets the visual feedback on the previously chosen element
      */
     private void unmarkCurrentElement(){
-        anim.cancel();
+        anim = ObjectAnimator.ofFloat(currentElementInFocus, "alpha", 1f);
+        anim.setDuration(1);
+        anim.start();
     }
 
 
@@ -151,15 +157,20 @@ public class UINavigator {
      * displays a toast
      */
     private void playActionNotValidSound(){
-        try {
+
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(ctx, "Action not valid!", Toast.LENGTH_SHORT);
+        toast.show();
+
+        /*try {
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(ctx, notification);
             r.play();
         } catch (Exception e) {
-            Toast errorToast;
-            errorToast = Toast.makeText(ctx, "Action not valid!", Toast.LENGTH_SHORT);
-            errorToast.show();
             e.printStackTrace();
-        }
+        }*/
+
     }
 }
