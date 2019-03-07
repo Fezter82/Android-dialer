@@ -22,6 +22,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor accelerometer;
     private TextView x, y, z;
     private Toast directionToast;
+    private ExecutorService exec;
 
 
     /**
@@ -115,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         textView.setText(number);
 
         navigator = new UINavigator(uiContainer, getApplicationContext());
+        exec = Executors.newFixedThreadPool(1);
     }
 
 
