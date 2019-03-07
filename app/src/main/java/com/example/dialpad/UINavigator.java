@@ -12,12 +12,11 @@ import android.widget.Toast;
 
 public class UINavigator {
 
-    private BaseContainer container;
+    private UIContainer container;
     private View currentElementInFocus;
     private Position currentPos;
     private Context ctx;
     private ObjectAnimator anim;
-    private Toast toast;
 
 
 
@@ -26,7 +25,7 @@ public class UINavigator {
      * @param pCont
      * @TODO Use BaseContainer instead of UIContainer
      */
-    public UINavigator(BaseContainer pCont, Context pCtx){
+    public UINavigator(UIContainer pCont, Context pCtx){
         this.container = pCont;
         this.currentPos = new Position();
         this.ctx = pCtx;
@@ -134,10 +133,7 @@ public class UINavigator {
         anim.setDuration(1);
         anim.start();
 
-        if (toast != null) {
-            toast.cancel();
-        }
-
+        Toast toast;
         toast = Toast.makeText(ctx, "Element in focus: x=" + currentPos.getX() + " y=" + currentPos.getY(), Toast.LENGTH_SHORT);
         toast.show();
     }
@@ -147,9 +143,7 @@ public class UINavigator {
      * Resets the visual feedback on the previously chosen element
      */
     private void unmarkCurrentElement(){
-        anim = ObjectAnimator.ofFloat(currentElementInFocus, "alpha", 1f);
-        anim.setDuration(1);
-        anim.start();
+        anim.cancel();
     }
 
 
@@ -158,20 +152,15 @@ public class UINavigator {
      * displays a toast
      */
     private void playActionNotValidSound(){
-
-        if (toast != null) {
-            toast.cancel();
-        }
-        toast = Toast.makeText(ctx, "Action not valid!", Toast.LENGTH_SHORT);
-        toast.show();
-
-        /*try {
+        try {
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             Ringtone r = RingtoneManager.getRingtone(ctx, notification);
             r.play();
         } catch (Exception e) {
+            Toast errorToast;
+            errorToast = Toast.makeText(ctx, "Action not valid!", Toast.LENGTH_SHORT);
+            errorToast.show();
             e.printStackTrace();
-        }*/
-
+        }
     }
 }
