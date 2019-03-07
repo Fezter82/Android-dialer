@@ -49,6 +49,14 @@ public class UINavigator {
     }
 
     /**
+     * Simulates a click
+     * @return currentElementInFocus
+     */
+    public View click(){
+        return currentElementInFocus;
+    }
+
+    /**
      * Simulates a navigation upwards in UI
      * @return true if move was successful
      */
