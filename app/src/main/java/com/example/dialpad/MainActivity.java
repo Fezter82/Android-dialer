@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     BaseContainer<View> uiContainer;
     UINavigator navigator;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +88,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // Set default values if no values are set
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
+        // If this activity was started with an intent, get number from intent
+        Intent intent = getIntent();
+        String number = intent.getStringExtra("NUMBER");
+        TextView textView = findViewById(R.id.input);
+        textView.setText(number);
 
-        // put ui-elements in uicontainer
+        // put ui-elements in uiContainer
         uiContainer = new UIContainer<>(3, 6);
         uiContainer.set(new Position(0,0), null);
         uiContainer.set(new Position(1, 0), null);
-        uiContainer.set(new Position(2, 0), findViewById(R.id.action_call_list));
         uiContainer.set(new Position(0, 1), null);
         uiContainer.set(new Position(1, 1), findViewById(R.id.deleteButton));
         uiContainer.set(new Position(2, 1), findViewById(R.id.phoneButton));
@@ -105,12 +114,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         uiContainer.set(new Position(1, 5), findViewById(R.id.imageButton0));
         uiContainer.set(new Position(2, 5), findViewById(R.id.imageButtonPound));
 
-        // If this activity was started with an intent, get number from intent
-        Intent intent = getIntent();
-        String number = intent.getStringExtra("NUMBER");
-        TextView textView = findViewById(R.id.input);
-        textView.setText(number);
-
+        //create navigator with uiContainer
         navigator = new UINavigator(uiContainer, getApplicationContext());
     }
 
@@ -138,6 +142,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbaritems, menu);
+
+        //adding menuItem to the uiContainer
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+
+                final View callList = findViewById(R.id.action_call_list);
+                uiContainer.set(new Position(2, 0), callList);
+
+            }
+        });
+
         return true;
     }
 
@@ -185,6 +201,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
 
             sm.unregisterListener(this);
+
+            View clickedView = navigator.click();
+
+            if(clickedView != null)
+                if(clickedView.isClickable()){
+                    clickedView.performClick();
+                }
 
             try{
                 Thread.sleep(300);
