@@ -26,10 +26,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
+    private SensorManager sm;
+    private Sensor accelerometer;
     private TextView x, y, z;
+    private Toast directionToast;
 
 
     /**
@@ -78,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
         }
 
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
         // Set default values if no values are set
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
@@ -107,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
         uiContainer.set(new Position(1, 5), findViewById(R.id.imageButton0));
         uiContainer.set(new Position(2, 5), findViewById(R.id.imageButtonPound));
 
-
+        //create navigator with uiContainer
+        navigator = new UINavigator(uiContainer, getApplicationContext());
     }
 
 
@@ -146,9 +154,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //create navigator with uiContainer
-        navigator = new UINavigator(uiContainer, getApplicationContext(), this);
-
         return true;
     }
 
@@ -162,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_call_list:
-                Intent callListIntent = new Intent(this, SelectableCallListActivity.class);
+                Intent callListIntent = new Intent(this, CallListActivity.class);
                 startActivity(callListIntent);
                 return true;
 
@@ -172,4 +177,147 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sm.unregisterListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    //Feeds new X, Y, Z-values when accelerometer/gyro has detected a motion
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        //System.out.println("Motion detected X: " + event.values[1] + ", Y: " + event.values[2]);
+
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        //CLICK
+        if(event.values[2] > 15){
+
+            System.out.println("CLICK detected");
+
+            if (directionToast != null) {
+                directionToast.cancel();
+            }
+
+            sm.unregisterListener(this);
+
+            View clickedView = navigator.click();
+
+            if(clickedView != null)
+                if(clickedView.isClickable()){
+                    clickedView.performClick();
+                }
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        //UP
+        else if(event.values[1] < 6 && event.values[2] > 10){
+
+            System.out.println("UP detected");
+
+            if (directionToast != null) {
+                directionToast.cancel();
+            }
+
+            sm.unregisterListener(this);
+
+            navigator.moveUp();
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        //DOWN
+        else if(event.values[1] > 8 && event.values[2] < 2){
+
+            System.out.println("DOWN detected");
+
+            if (directionToast != null) {
+                directionToast.cancel();
+            }
+
+            sm.unregisterListener(this);
+
+            navigator.moveDown();
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        //LEFT
+        else if(event.values[0] > 3){
+
+            System.out.println("LEFT detected");
+
+            if (directionToast != null) {
+                directionToast.cancel();
+            }
+
+            sm.unregisterListener(this);
+
+            navigator.moveLeft();
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        //RIGHT
+        else if(event.values[0] < -3){
+
+            System.out.println("RIGHT detected");
+
+            if (directionToast != null) {
+                directionToast.cancel();
+            }
+
+            sm.unregisterListener(this);
+
+            navigator.moveRight();
+
+            try{
+                Thread.sleep(300);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+
+
+    }
 }
