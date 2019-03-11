@@ -55,6 +55,20 @@ public class UINavigator implements SensorEventListener {
     }
 
     /**
+     * start
+     */
+    public void start(){
+        sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    /**
+     * stop
+     */
+    public void stop(){
+        sm.unregisterListener(this);
+    }
+
+    /**
      * Simulates a click
      * @return currentElementInFocus
      */

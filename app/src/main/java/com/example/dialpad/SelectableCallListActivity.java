@@ -29,7 +29,7 @@ public class SelectableCallListActivity extends ListActivity {
         this.setListAdapter(adapter);
 
         uiContainer = new ListViewContainer<>(this.getListView());
-        navigator = new UINavigator(uiContainer, getApplicationContext());
+        //navigator = new UINavigator(uiContainer, getApplicationContext());
     }
 
     @Override
