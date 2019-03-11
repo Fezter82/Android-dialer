@@ -191,10 +191,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
 
+/*        float x = event.values[0];
+        float y = event.values[1];
+        float z= event.values[2];*/
+
+
         //CLICK
-        if(event.values[2] > 15){
+         if(event.values[2] > 15 && event.values[1] > 4 && event.values[1] < 8){
 
             System.out.println("CLICK detected");
+             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
             if (directionToast != null) {
                 directionToast.cancel();
@@ -210,17 +216,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 }
 
             try{
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
 
             sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         }
+
         //UP
-        else if(event.values[1] < 6 && event.values[2] > 10){
+         else if(event.values[1] < 4 && event.values[2] > 10){
 
             System.out.println("UP detected");
+             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
             if (directionToast != null) {
                 directionToast.cancel();
@@ -231,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             navigator.moveUp();
 
             try{
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -240,9 +248,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
         //DOWN
-        else if(event.values[1] > 8 && event.values[2] < 2){
+        else if(event.values[1] > 8 && event.values[2] < 4){
 
             System.out.println("DOWN detected");
+             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
             if (directionToast != null) {
                 directionToast.cancel();
@@ -253,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             navigator.moveDown();
 
             try{
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -265,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         else if(event.values[0] > 3){
 
             System.out.println("LEFT detected");
+             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
             if (directionToast != null) {
                 directionToast.cancel();
@@ -275,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             navigator.moveLeft();
 
             try{
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -287,6 +297,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         else if(event.values[0] < -3){
 
             System.out.println("RIGHT detected");
+            System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
             if (directionToast != null) {
                 directionToast.cancel();
@@ -297,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             navigator.moveRight();
 
             try{
-                Thread.sleep(300);
+                Thread.sleep(500);
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
@@ -305,6 +316,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         }
+
+         //LONG CLICK
+         else if(event.values[2] < 4){
+
+             System.out.println("LONG CLICK detected");
+             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
+             if (directionToast != null) {
+                 directionToast.cancel();
+             }
+
+             sm.unregisterListener(this);
+
+             View clickedView = navigator.longClick();
+
+             if(clickedView != null)
+                 if(clickedView.isLongClickable()){
+                     clickedView.performLongClick();
+                 }
+
+             try{
+                 Thread.sleep(500);
+             } catch(InterruptedException e){
+                 e.printStackTrace();
+             }
+
+             sm.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+         }
 
 
     }

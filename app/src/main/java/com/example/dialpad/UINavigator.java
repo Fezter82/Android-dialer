@@ -57,6 +57,14 @@ public class UINavigator {
     }
 
     /**
+     * Simulates a long click
+     * @return currentElementInFocus
+     */
+    public View longClick(){
+        return currentElementInFocus;
+    }
+
+    /**
      * Simulates a navigation upwards in UI
      * @return true if move was successful
      */
