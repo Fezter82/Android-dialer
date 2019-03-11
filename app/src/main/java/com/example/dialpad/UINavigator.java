@@ -1,34 +1,40 @@
 package com.example.dialpad;
 
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.view.View;
 import android.widget.Toast;
 
 
-public class UINavigator {
+public class UINavigator implements SensorEventListener {
 
-    private BaseContainer container;
+    private BaseContainer<View> container;
     private View currentElementInFocus;
     private Position currentPos;
     private Context ctx;
     private ObjectAnimator anim;
     private Toast toast;
 
+    private SensorManager sm;
+    private Sensor accelerometer;
 
 
     /**
      * Constructor
-     * @param pCont
      */
-    public UINavigator(BaseContainer pCont, Context pCtx){
+    public UINavigator(BaseContainer<View> pCont, Context pCtx, Activity parent){
         this.container = pCont;
         this.currentPos = new Position();
         this.ctx = pCtx;
+
+        this.sm = (SensorManager) parent.getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         boolean isFound = false;
 
@@ -49,10 +55,32 @@ public class UINavigator {
     }
 
     /**
+     * start
+     */
+    public void start(){
+        sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    /**
+     * stop
+     */
+    public void stop(){
+        sm.unregisterListener(this);
+    }
+
+    /**
      * Simulates a click
      * @return currentElementInFocus
      */
     public View click(){
+        return currentElementInFocus;
+    }
+
+    /**
+     * Simulates a long click
+     * @return currentElementInFocus
+     */
+    public View longClick(){
         return currentElementInFocus;
     }
 
@@ -179,6 +207,156 @@ public class UINavigator {
         } catch (Exception e) {
             e.printStackTrace();
         }*/
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    //Feeds new X, Y, Z-values when accelerometer/gyro has detected a motion
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+
+        //CLICK
+        if(event.values[2] > 15 && event.values[1] > 4 && event.values[1] < 8){
+
+            System.out.println("CLICK detected");
+            System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
+            sm.unregisterListener(this);
+
+            View clickedView = click();
+
+            if(clickedView != null)
+                if(clickedView.isClickable()){
+                    clickedView.performClick();
+                }
+
+            try{
+                Thread.sleep(400);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+
+        //UP
+        else if(event.values[1] < 4 && event.values[2] > 10){
+
+            System.out.println("UP detected");
+            System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
+            sm.unregisterListener(this);
+
+            moveUp();
+
+            try{
+                Thread.sleep(400);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        //DOWN
+        else if(event.values[1] > 8 && event.values[2] < 4){
+
+            sm.unregisterListener(this);
+
+            if(event.values[1] > 8){
+                System.out.println("DOWN detected");
+                System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+                moveDown();
+            }
+            else{
+                System.out.println("LONG CLICK detected");
+                System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
+                View clickedView = longClick();
+
+                if(clickedView != null)
+                    if(clickedView.isLongClickable()){
+                        clickedView.performLongClick();
+                    }
+            }
+
+            try{
+                Thread.sleep(400);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        //LEFT
+        else if(event.values[0] > 3){
+
+            System.out.println("LEFT detected");
+            System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
+            sm.unregisterListener(this);
+
+            moveLeft();
+
+            try{
+                Thread.sleep(400);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+        //RIGHT
+        else if(event.values[0] < -3){
+
+            System.out.println("RIGHT detected");
+            System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
+            sm.unregisterListener(this);
+
+            moveRight();
+
+            try{
+                Thread.sleep(400);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+
+         /*//LONG CLICK
+         else if(event.values[2] < 4){
+
+             System.out.println("LONG CLICK detected");
+             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
+             sm.unregisterListener(this);
+
+             View clickedView = longClick();
+
+             if(clickedView != null)
+                 if(clickedView.isLongClickable()){
+                     clickedView.performLongClick();
+                 }
+
+             try{
+                 Thread.sleep(400);
+             } catch(InterruptedException e){
+                 e.printStackTrace();
+             }
+
+             sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+         }*/
+
 
     }
 }

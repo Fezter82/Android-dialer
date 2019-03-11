@@ -20,12 +20,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class CallListActivity extends AppCompatActivity implements SensorEventListener {
+public class CallListActivity extends AppCompatActivity {
 
-    private SensorManager sm;
-    private Sensor accelerometer;
-    private TextView x, y, z;
-    private Toast directionToast;
     BaseContainer<View> uiContainer;
     UINavigator navigator;
 
@@ -38,10 +34,6 @@ public class CallListActivity extends AppCompatActivity implements SensorEventLi
         setSupportActionBar(myToolbar);
 //        getActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        sm.registerListener(CallListActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         // Get all stored numbers
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -76,7 +68,7 @@ public class CallListActivity extends AppCompatActivity implements SensorEventLi
         } else {
             uiContainer = new UIContainer<>(0, 1);
         }
-        navigator = new UINavigator(uiContainer, getApplicationContext());
+
     }
 
     private void init() {
@@ -86,142 +78,19 @@ public class CallListActivity extends AppCompatActivity implements SensorEventLi
     @Override
     protected void onPause() {
         super.onPause();
-        sm.unregisterListener(this);
+        navigator.stop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        sm.registerListener(CallListActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-    }
 
-    //Feeds new X, Y, Z-values when accelerometer/gyro has detected a motion
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-        //System.out.println("Motion detected X: " + event.values[1] + ", Y: " + event.values[2]);
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        //CLICK
-        if(event.values[2] > 15){
-
-            System.out.println("CLICK detected");
-
-            if (directionToast != null) {
-                directionToast.cancel();
-            }
-
-            sm.unregisterListener(this);
-
-            View clickedView = navigator.click();
-
-            if(clickedView != null)
-                if(clickedView.isClickable()){
-                    clickedView.performClick();
-                }
-
-            try{
-                Thread.sleep(300);
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-
-            sm.registerListener(CallListActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-        }
-        //UP
-        else if(event.values[1] < 6 && event.values[2] > 10){
-
-            System.out.println("UP detected");
-
-            if (directionToast != null) {
-                directionToast.cancel();
-            }
-
-            sm.unregisterListener(this);
-
-            navigator.moveUp();
-
-            try{
-                Thread.sleep(300);
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-
-            sm.registerListener(CallListActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
-        }
-        //DOWN
-        else if(event.values[1] > 8 && event.values[2] < 2){
-
-            System.out.println("DOWN detected");
-
-            if (directionToast != null) {
-                directionToast.cancel();
-            }
-
-            sm.unregisterListener(this);
-
-            navigator.moveDown();
-
-            try{
-                Thread.sleep(300);
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-
-            sm.registerListener(CallListActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
-        }
-        //LEFT
-        else if(event.values[0] > 3){
-
-            System.out.println("LEFT detected");
-
-            if (directionToast != null) {
-                directionToast.cancel();
-            }
-
-            sm.unregisterListener(this);
-
-            navigator.moveLeft();
-
-            try{
-                Thread.sleep(300);
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-
-            sm.registerListener(CallListActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
-        }
-        //RIGHT
-        else if(event.values[0] < -3){
-
-            System.out.println("RIGHT detected");
-
-            if (directionToast != null) {
-                directionToast.cancel();
-            }
-
-            sm.unregisterListener(this);
-
-            navigator.moveRight();
-
-            try{
-                Thread.sleep(300);
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-
-            sm.registerListener(CallListActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        //can't send the "this"-reference from onCreate so navigator has to be created after
+        //onCreate has finished. onResume runs both on startup and on restart of activity
+        if(navigator == null)
+            navigator = new UINavigator(uiContainer, getApplicationContext(), this);
+        else
+            navigator.start();
 
     }
 }
