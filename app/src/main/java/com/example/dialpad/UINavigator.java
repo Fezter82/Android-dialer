@@ -268,7 +268,12 @@ public class UINavigator implements SensorEventListener {
 
             sm.unregisterListener(this);
 
-            if(event.values[2] < 0){
+            if(event.values[1] > 8){
+                System.out.println("DOWN detected");
+                System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+                moveDown();
+            }
+            else{
                 System.out.println("LONG CLICK detected");
                 System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
@@ -278,11 +283,6 @@ public class UINavigator implements SensorEventListener {
                     if(clickedView.isLongClickable()){
                         clickedView.performLongClick();
                     }
-            }
-            else{
-                System.out.println("DOWN detected");
-                System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
-                moveDown();
             }
 
             try{
