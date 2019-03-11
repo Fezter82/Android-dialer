@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 return true;
 
             case R.id.action_call_list:
-                Intent callListIntent = new Intent(this, SelectableCallListActivity.class);
+                Intent callListIntent = new Intent(this, CallListActivity.class);
                 startActivity(callListIntent);
                 return true;
 
