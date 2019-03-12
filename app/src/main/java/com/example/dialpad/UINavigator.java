@@ -295,7 +295,7 @@ public class UINavigator implements SensorEventListener {
         }
 
         //UP
-        else if(event.values[1] < 4 && event.values[2] > 10){
+        else if(event.values[1] < 4 && event.values[2] > 12){
 
             System.out.println("UP detected");
             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
@@ -314,7 +314,7 @@ public class UINavigator implements SensorEventListener {
 
         }
         //DOWN
-        else if(event.values[1] > 8 && event.values[2] < 4){
+        else if(event.values[1] > 8 && event.values[2] < -1){
 
             System.out.println("DOWN detected");
             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
