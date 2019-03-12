@@ -3,11 +3,14 @@ package com.example.dialpad;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 
@@ -19,6 +22,8 @@ public class UINavigator implements SensorEventListener {
     private Context ctx;
     private ObjectAnimator anim;
     private Toast toast;
+    // a scrollview with linearlayout as only child that wraps all other views, null if layout don't use scrollview
+    private ScrollView scrollView;
 
     private SensorManager sm;
     private Sensor accelerometer;
@@ -31,6 +36,7 @@ public class UINavigator implements SensorEventListener {
         this.container = pCont;
         this.currentPos = new Position();
         this.ctx = pCtx;
+        this.scrollView = null;
 
         this.sm = (SensorManager) parent.getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -53,6 +59,12 @@ public class UINavigator implements SensorEventListener {
             }
         }
     }
+
+    /**
+     * Setter
+     * @param scrollView
+     */
+    public void setScrollView (ScrollView scrollView) { this.scrollView = scrollView; }
 
     /**
      * start
@@ -85,6 +97,29 @@ public class UINavigator implements SensorEventListener {
     }
 
     /**
+     * Called to update the scrollviews position
+     * @param view - the view to scroll to
+     */
+    public void updateScrollView(View view) {
+        // Get rect representing scrollview
+        Rect scrollViewRect = new Rect();
+        scrollView.getDrawingRect(scrollViewRect);
+
+
+        // Get upper and lower limits of View
+        double viewTop = view.getY();
+        double viewBottom = viewTop + view.getHeight();
+
+        // if any part of the view is outside of the screen, scroll
+        // to it
+        if (viewTop < scrollViewRect.top|| viewBottom > scrollViewRect.bottom) {
+            Rect viewRect = new Rect();
+            view.getHitRect(viewRect);
+            scrollView.requestChildRectangleOnScreen(scrollView.getChildAt(0), viewRect, false);
+        }
+    }
+
+    /**
      * Simulates a navigation upwards in UI
      * @return true if move was successful
      */
@@ -96,6 +131,11 @@ public class UINavigator implements SensorEventListener {
             currentElementInFocus = (View)container.get(nextPos);
             currentPos.setY(currentPos.getY() - 1);
             setCurrentElementAsMarked();
+
+            if (scrollView != null) {
+                updateScrollView(currentElementInFocus);
+            }
+
             return true;
         }
 
@@ -115,6 +155,11 @@ public class UINavigator implements SensorEventListener {
             currentElementInFocus = (View)container.get(nextPos);
             currentPos.setY(currentPos.getY() + 1);
             setCurrentElementAsMarked();
+
+            if (scrollView != null) {
+                updateScrollView(currentElementInFocus);
+            }
+
             return true;
         }
 
@@ -134,6 +179,11 @@ public class UINavigator implements SensorEventListener {
             currentElementInFocus = (View)container.get(nextPos);
             currentPos.setX(currentPos.getX() - 1);
             setCurrentElementAsMarked();
+
+            if (scrollView != null) {
+                updateScrollView(currentElementInFocus);
+            }
+
             return true;
         }
 
@@ -153,6 +203,11 @@ public class UINavigator implements SensorEventListener {
             currentElementInFocus = (View)container.get(nextPos);
             currentPos.setX(currentPos.getX() + 1);
             setCurrentElementAsMarked();
+
+            if (scrollView != null) {
+                updateScrollView(currentElementInFocus);
+            }
+
             return true;
         }
 
