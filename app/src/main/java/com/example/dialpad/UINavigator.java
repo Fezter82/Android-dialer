@@ -224,12 +224,7 @@ public class UINavigator implements SensorEventListener {
         anim.setDuration(1);
         anim.start();
 
-        if (toast != null) {
-            toast.cancel();
-        }
-
-        toast = Toast.makeText(ctx, "Element in focus: x=" + currentPos.getX() + " y=" + currentPos.getY(), Toast.LENGTH_SHORT);
-        toast.show();
+        Log.i("Element in focus: ", "x=" + currentPos.getX() + " y=" + currentPos.getY());
     }
 
 
