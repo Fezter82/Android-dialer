@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class CallListActivity extends AppCompatActivity {
         list.removeAllViews();
         if (storedNumbers != null && storedNumbers.size() > 0) {
             uiContainer = new UIContainer<>(1, storedNumbers.size());
+            uiContainer.setScrollable(true);
 
             for (int i = 0; i < storedNumbers.size(); i++) {
                 final TextView textView = new TextView(this);
@@ -87,8 +89,10 @@ public class CallListActivity extends AppCompatActivity {
 
         //can't send the "this"-reference from onCreate so navigator has to be created after
         //onCreate has finished. onResume runs both on startup and on restart of activity
-        if(navigator == null)
+        if(navigator == null) {
             navigator = new UINavigator(uiContainer, getApplicationContext(), this);
+            navigator.setScrollView((ScrollView) findViewById(R.id.scroll_view));
+        }
         else
             navigator.start();
 
