@@ -220,19 +220,19 @@ public class UINavigator implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
 
 
-        //CLICK
+        //LONG CLICK
         if(event.values[2] > 15 && event.values[1] > 4 && event.values[1] < 8){
 
-            System.out.println("CLICK detected");
+            System.out.println("LONG CLICK detected");
             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
             sm.unregisterListener(this);
 
-            View clickedView = click();
+            View clickedView = longClick();
 
             if(clickedView != null)
-                if(clickedView.isClickable()){
-                    clickedView.performClick();
+                if(clickedView.isLongClickable()){
+                    clickedView.performLongClick();
                 }
 
             try{
@@ -266,24 +266,12 @@ public class UINavigator implements SensorEventListener {
         //DOWN
         else if(event.values[1] > 8 && event.values[2] < 4){
 
+            System.out.println("DOWN detected");
+            System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+
             sm.unregisterListener(this);
 
-            if(event.values[1] > 8){
-                System.out.println("DOWN detected");
-                System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
-                moveDown();
-            }
-            else{
-                System.out.println("LONG CLICK detected");
-                System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
-
-                View clickedView = longClick();
-
-                if(clickedView != null)
-                    if(clickedView.isLongClickable()){
-                        clickedView.performLongClick();
-                    }
-            }
+            moveDown();
 
             try{
                 Thread.sleep(400);
@@ -333,29 +321,29 @@ public class UINavigator implements SensorEventListener {
 
         }
 
-         /*//LONG CLICK
-         else if(event.values[2] < 4){
+         //CLICK
+         else if(event.values[2] < 0 && event.values[1] > 4 && event.values[1] < 8){
 
-             System.out.println("LONG CLICK detected");
-             System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
+            System.out.println("CLICK detected");
+            System.out.println("x: " + event.values[0] + " Y: " + event.values[1] + " Z:" + event.values[2]);
 
-             sm.unregisterListener(this);
+            sm.unregisterListener(this);
 
-             View clickedView = longClick();
+            View clickedView = click();
 
-             if(clickedView != null)
-                 if(clickedView.isLongClickable()){
-                     clickedView.performLongClick();
-                 }
+            if(clickedView != null)
+                if(clickedView.isClickable()){
+                    clickedView.performClick();
+                }
 
-             try{
-                 Thread.sleep(400);
-             } catch(InterruptedException e){
-                 e.printStackTrace();
-             }
+            try{
+                Thread.sleep(400);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
 
-             sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-         }*/
+            sm.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+         }
 
 
     }
