@@ -45,7 +45,6 @@ public class CallListActivity extends AppCompatActivity {
         list.removeAllViews();
         if (storedNumbers != null && storedNumbers.size() > 0) {
             uiContainer = new UIContainer<>(1, storedNumbers.size());
-            uiContainer.setScrollable(true);
 
             for (int i = 0; i < storedNumbers.size(); i++) {
                 final TextView textView = new TextView(this);

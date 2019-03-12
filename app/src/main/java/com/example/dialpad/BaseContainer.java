@@ -40,17 +40,6 @@ public interface BaseContainer<T> {
 
     /**
      *
-     * @return true if ui is scrollable
-     */
-    public boolean isScrollable();
-
-    /**
-     * Sets the scrollable flag
-     */
-    public void setScrollable(boolean scrollable);
-
-    /**
-     *
      * @return x-size of container
      */
     public int getxSize();
@@ -60,28 +49,4 @@ public interface BaseContainer<T> {
      * @return y-size of container
      */
     public int getySize();
-
-    /**
-     *
-     * @return true if scrolling succeded
-     */
-    public boolean scrollUp();
-
-    /**
-     *
-     * @return true if scrolling succeded
-     */
-    public boolean scrollDown();
-
-    /**
-     *
-     * @return true if scrolling succeded
-     */
-    public boolean scrollLeft();
-
-    /**
-     *
-     * @return true if scrolling succeded
-     */
-    public boolean scrollRight();
 }
