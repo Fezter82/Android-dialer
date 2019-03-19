@@ -1,5 +1,8 @@
 package com.example.dialpad;
 
+/**
+ * Describes a position in a one or two dimensional system
+ */
 public class Position {
     private int x;
     private int y;
@@ -35,6 +38,10 @@ public class Position {
         this.y = y;
     }
 
+    /*
+     * Getter and setter for position in a one dimensional
+     * system
+     */
     public void setPos(int pos) { setY(pos); }
     public int getPos() { return getY(); }
 }
